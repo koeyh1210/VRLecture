@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour {
 
 	public RotationAxes axes = RotationAxes.MouseXAndY;
 
+	public float movementSpeed = 10.0f;
 	public float sensitivityX = 15F;
 	public float sensitivityY = 15F;
 	public float minimumX = -360F;
@@ -15,47 +16,37 @@ public class PlayerController : MonoBehaviour {
 	public float maximumY = 90F;
 	float rotationY = 0F;
 
-	private float movementSpeed;
 
 
 	private Vector3 mouseVector;
-	private Rigidbody rb;
 
-	private bool availableMove = true;
+	private Rigidbody rb;
 
 
 	// Use this for initialization
 	void Start () {
 		rb = GetComponent<Rigidbody> ();
-	
-		movementSpeed = 5.0f;
-
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
 		if (rb) {
 			rb.freezeRotation = true;
 		}
-	 
+	}
+	
+	// Update is called once per frame
+	void FixedUpdate () {
 		movePlayer ();
 		rotatePlayer ();
-
-
 	}
 
 	void OnCollisionEnter(Collision collision){
 		
 		if (collision.gameObject.tag == "Map") {
-			availableMove = false;
+			rb.velocity = Vector3.zero;
 		}
 	}
 
 	void OnCollisionExit(Collision collision){
-		
 		if (collision.gameObject.tag == "Map") {
-			availableMove = true;
+			rb.velocity = Vector3.zero;
 		}
 	}
 
